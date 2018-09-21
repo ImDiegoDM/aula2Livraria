@@ -1,0 +1,968 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Livraria Store"
+  },
+  "host": "localhost:10010",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Book",
+      "description": "Book releated end points",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/books": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Book"
+        ],
+        "description": "Return books of the store",
+        "operationId": "getBooks",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search term for books can be title, author, category or publisher",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Book"
+        ],
+        "description":"Create a book on the store",
+        "operationId": "addBook",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Title of the book",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/BookPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/books/{bookId}": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Book"
+        ],
+        "description": "Return a book",
+        "operationId": "getBook",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "Id of the book to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Book"
+        ],
+        "description":"Edit a book on the store",
+        "operationId": "editBook",
+        "parameters":[
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "Id of the book to return",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Title of the book",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/BookPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/books/{bookId}/comments": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Book"
+        ],
+        "description": "Return the comments of a book",
+        "operationId": "getBookComments",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "Id of the book to return the comments",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comments"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Book"
+        ],
+        "description":"Edit a book on the store",
+        "operationId": "editBookComment",
+        "parameters":[
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "Id of the book to return",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Title of the book",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/BookPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/authors": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Author"
+        ],
+        "description": "Return authors of the store",
+        "operationId": "getAuthors",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Authors"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Author"
+        ],
+        "description":"Create a book on the store",
+        "operationId": "addAuthor",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Title of the book",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/AuthorPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/authors/{authorId}": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Author"
+        ],
+        "description": "Return a author",
+        "operationId": "getAuthor",
+        "parameters": [
+          {
+            "name": "authorId",
+            "in": "path",
+            "description": "Id of the author to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Author"
+        ],
+        "description":"Edit a author on the store",
+        "operationId": "editAuthor",
+        "parameters":[
+          {
+            "name": "authorId",
+            "in": "path",
+            "description": "Id of the author to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/AuthorPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/authors/{authorId}/books": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Author"
+        ],
+        "description": "Return the author books",
+        "operationId": "getAuthorBooks",
+        "parameters": [
+          {
+            "name": "authorId",
+            "in": "path",
+            "description": "Id of the author to return his books",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/publishers": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Publisher"
+        ],
+        "description": "Return publishers of the store",
+        "operationId": "getPublishers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Publishers"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Publisher"
+        ],
+        "description":"Create a publisher on the store",
+        "operationId": "addAuthor",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Title of the book",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/PublisherPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/publishers/{publisherId}": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Publisher"
+        ],
+        "description": "Return a publisher",
+        "operationId": "getpublisher",
+        "parameters": [
+          {
+            "name": "publisherId",
+            "in": "path",
+            "description": "Id of the publisher to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PubCompany"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Publisher"
+        ],
+        "description":"Edit a publisher on the store",
+        "operationId": "editpublisher",
+        "parameters":[
+          {
+            "name": "publisherId",
+            "in": "path",
+            "description": "Id of the publisher to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/PublisherPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/publishers/{publisherId}/books": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Publisher"
+        ],
+        "description": "Return the publisher books",
+        "operationId": "getPublisherBooks",
+        "parameters": [
+          {
+            "name": "publisherId",
+            "in": "path",
+            "description": "Id of the author to return his books",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swagger": {
+      "x-swagger-pipe": "swagger_raw"
+    }
+  },
+  "definitions": {
+    "Author":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+          "type":"string"
+        }
+      }
+    },
+    "AuthorWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+          "type":"string"
+        },
+        "author_uri":{
+          "type":"string"
+        }
+      }
+    },
+    "AuthorPost":{
+      "required":[
+        "name"
+      ],
+      "properties":{
+        "name":{
+          "type":"string"
+        }
+      }
+    },
+    "PubCompany":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+         "type":"string" 
+        }
+      }
+    },
+    "PublisherPost":{
+      "required":[
+        "name"
+      ],
+      "properties":{
+        "name":{
+         "type":"string" 
+        }
+      }
+    },
+    "PubCompanyWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+         "type":"string" 
+        },
+        "pub_company_uri":{
+          "type":"string"
+        }
+      }
+    },
+    "Category":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+         "type":"string" 
+        }
+      }
+    },
+    "CategoryWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+         "type":"string" 
+        },
+        "catgory_uri":{
+          "type":"string" 
+         }
+      }
+    },
+    "BookPost":{
+      "required": [
+        "name",
+        "author_id",
+        "pub_company_id",
+        "category_id",
+        "price",
+        "year"
+      ],
+      "properties":{
+        "name":{
+          "type":"string"
+        },
+        "author_id":{
+          "type":"number"
+        },
+        "pub_company_id":{
+          "type":"number"
+        },
+        "category_id":{
+          "type":"number"
+        },
+        "price":{
+          "type":"number"
+        },
+        "year":{
+          "type":"number"
+        }
+      }
+    },
+    "Book":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+          "type":"number"
+        },
+        "author":{
+          "$ref":"#/definitions/AuthorWithUri"
+        },
+        "pub_company":{
+          "$ref":"#/definitions/PubCompanyWithUri"
+        },
+        "category":{
+          "$ref":"#/definitions/CategoryWithUri"
+        },
+        "price":{
+          "type":"number"
+        },
+        "year":{
+          "type":"number"
+        }
+      }
+    },
+    "BookWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "author":{
+          "$ref":"#/definitions/AuthorWithUri"
+        },
+        "pub_company":{
+          "$ref":"#/definitions/PubCompanyWithUri"
+        },
+        "category":{
+          "$ref":"#/definitions/CategoryWithUri"
+        },
+        "name":{
+          "type":"number"
+        },
+        "price":{
+          "type":"number"
+        },
+        "year":{
+          "type":"string"
+        },
+        "livro_uri":{
+          "type":"string"
+        }
+      }
+    },
+    "User":{
+      "properties":{
+        "name":{
+          "type":"string"
+        },
+        "cpf":{
+          "type":"string"
+        }
+      }
+    },
+    "UserWithUri":{
+      "properties":{
+        "name":{
+          "type":"string"
+        },
+        "cpf":{
+          "type":"string"
+        },
+        "userUri":{
+          "type":"string"
+        }
+      }
+    },
+    "Comment":{
+      "properties":{
+        "comment":{
+          "type":"string"
+        },
+        "stars":{
+          "type":"number"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "book":{
+          "$ref":"#/definitions/BookWithUri"
+        }
+      }
+    },
+    "CommentWithUri":{
+      "properties":{
+        "comment":{
+          "type":"string"
+        },
+        "stars":{
+          "type":"number"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "book":{
+          "$ref":"#/definitions/BookWithUri"
+        },
+        "commentUri":{
+          "type":"string"
+        }
+      }
+    },
+    "Publishers": {
+      "required": [],
+      "properties": {
+        "paginas": {
+            "type": "number"
+        },
+        "paginaAtual": {
+            "type": "number"
+        },
+        "proximaPagina": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/PubCompanyWithUri"
+          }
+        }
+      }
+    },
+    "Comments": {
+      "required": [],
+      "properties": {
+        "paginas": {
+            "type": "number"
+        },
+        "paginaAtual": {
+            "type": "number"
+        },
+        "proximaPagina": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/CoomentWithUri"
+          }
+        }
+      }
+    },
+    "Authors": {
+      "required": [],
+      "properties": {
+        "paginas": {
+            "type": "number"
+        },
+        "paginaAtual": {
+            "type": "number"
+        },
+        "proximaPagina": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/AuthorWithUri"
+          }
+        }
+      }
+    },
+    "Books": {
+      "required": [],
+      "properties": {
+        "paginas": {
+            "type": "number"
+        },
+        "paginaAtual": {
+            "type": "number"
+        },
+        "proximaPagina": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/BookWithUri"
+          }
+        }
+      }
+    },
+    "ErrorResponse": {
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
