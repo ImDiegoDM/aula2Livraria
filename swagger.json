@@ -76,7 +76,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Title of the book",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/BookPost"
@@ -148,7 +148,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Title of the book",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/BookPost"
@@ -167,9 +167,33 @@
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Book"
+        ],
+        "description":"Delete a book on the store",
+        "operationId": "deleteBook",
+        "parameters":[
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "Id of the book to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
           },
-          "404":{
-            "description": "Not Found",
+          "400":{
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -240,7 +264,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Title of the book",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/BookPost"
@@ -256,12 +280,6 @@
           },
           "400":{
             "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          },
-          "404":{
-            "description": "Not Found",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -312,7 +330,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Title of the book",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/AuthorPost"
@@ -384,7 +402,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/AuthorPost"
@@ -403,9 +421,33 @@
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Author"
+        ],
+        "description":"delete a author on the store",
+        "operationId": "deleteAuthor",
+        "parameters":[
+          {
+            "name": "authorId",
+            "in": "path",
+            "description": "Id of the author to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
           },
-          "404":{
-            "description": "Not Found",
+          "400":{
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -425,7 +467,7 @@
           {
             "name": "authorId",
             "in": "path",
-            "description": "Id of the author to return his books",
+            "description": "Id of the author to return its books",
             "required": false,
             "type": "string"
           }
@@ -489,7 +531,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Title of the book",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/PublisherPost"
@@ -561,7 +603,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "",
+            "description": "Body",
             "required": true,
             "schema":{
               "$ref": "#/definitions/PublisherPost"
@@ -580,9 +622,33 @@
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Publisher"
+        ],
+        "description":"delete a publisher on the store",
+        "operationId": "deletePubliser",
+        "parameters":[
+          {
+            "name": "publisherId",
+            "in": "path",
+            "description": "Id of the publisher to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
           },
-          "404":{
-            "description": "Not Found",
+          "400":{
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
@@ -602,7 +668,7 @@
           {
             "name": "publisherId",
             "in": "path",
-            "description": "Id of the author to return his books",
+            "description": "Id of the author to return its books",
             "required": false,
             "type": "string"
           }
@@ -623,11 +689,920 @@
         }
       }
     },
+    "/v1/users":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "User"
+        ],
+        "description": "Return the users of the store",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "User"
+        ],
+        "description":"Create a user on the store",
+        "operationId": "addUser",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/UserPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "User"
+        ],
+        "description": "Return a users of the store",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "User"
+        ],
+        "description":"Edit a user on the store",
+        "operationId": "editUser",
+        "parameters":[
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/UserPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "User"
+        ],
+        "description":"Delete a user on the store",
+        "operationId": "deleteUser",
+        "parameters":[
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/carts":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "User"
+        ],
+        "description": "Return the users cart",
+        "operationId": "getcart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to return its cart",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "User"
+        ],
+        "description":"Edit user cart",
+        "operationId": "editUserCart",
+        "parameters":[
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to edit its cart",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/CartPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/orders":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "User"
+        ],
+        "description": "Return the users orders",
+        "operationId": "getUserOrder",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to return its orders",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "User"
+        ],
+        "description":"Add a order for this user",
+        "operationId": "addUserOrder",
+        "parameters":[
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to add its order",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body. obs: address_id or address should be sended",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/OrderPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/comments":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "User"
+        ],
+        "description": "Return the users comments",
+        "operationId": "getUserComments",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id of the user to return its comments",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comments"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/carts":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "Carts"
+        ],
+        "description": "Return the carts of the store",
+        "operationId": "getCarts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Carts"
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "Order"
+        ],
+        "description": "Return the users orders",
+        "operationId": "getOrders",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{orderId}":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "Order"
+        ],
+        "description": "Return the users orders",
+        "operationId": "getOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Id of the order to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Order"
+        ],
+        "description":"Delete a order on the store",
+        "operationId": "deleteOrder",
+        "parameters":[
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Id of the order to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{orderId}/adresses":{
+      "x-swagger-router-controller": "user",
+      "put": {
+        "tags":[
+          "Order"
+        ],
+        "description": "Edit the address of this orders",
+        "operationId": "editAddressOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Id of the order to edit its address",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/AddressPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{orderId}/deliver-status":{
+      "x-swagger-router-controller": "user",
+      "put": {
+        "tags":[
+          "Order"
+        ],
+        "description": "Edit the deliver status of this orders",
+        "operationId": "editDeliverrStatusOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Id of the order to edit its deliver status",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/DeliverStatusPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/comments":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "Comment"
+        ],
+        "description": "return all comments of this store",
+        "operationId": "getComments",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comments"
+            }
+          }
+        }
+      }
+    },
+    "/v1/comments/{commentId}":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "Comment"
+        ],
+        "description": "return a comment",
+        "operationId": "getComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Id of the comment to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags":[
+          "Comment"
+        ],
+        "description": "Edit the comment",
+        "operationId": "editComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Id of the comment to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/CommentPost"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Comment"
+        ],
+        "description":"Delete a comment on the store",
+        "operationId": "deleteComment",
+        "parameters":[
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Id of the comment to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/swagger": {
       "x-swagger-pipe": "swagger_raw"
     }
   },
   "definitions": {
+    "CartPost":{
+      "properties":{
+        "books_ids":{
+          "type":"array",
+          "xml": {
+            "name": "books",
+            "wrapped": true
+          },
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "Carts": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/CartWithUri"
+          }
+        }
+      }
+    },
+    "Cart":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "books": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/BookWithUri"
+          }
+        },
+        "totalPrice":{
+          "type":"number"
+        }
+      }
+    },
+    "CartWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "books": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/BookWithUri"
+          }
+        },
+        "totalPrice":{
+          "type":"number"
+        },
+        "cart_uri":{
+          "type":"string"
+        }
+      }
+    },
+    "AddressPost":{
+      "properties":{
+        "cep":{
+          "type":"string"
+        },
+        "street":{
+          "type":"string"
+        },
+        "neighborhood":{
+          "type":"string"
+        },
+        "city":{
+          "type":"string"
+        },
+        "state":{
+          "type":"string"
+        }
+      }
+    },
+    "DeliverStatusPost":{
+      "properties":{
+        "status":{
+          "type":"string"
+        }
+      }
+    },
+    "DeliverStatus":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "status":{
+          "type":"string"
+        }
+      }
+    },
+    "Address":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "cep":{
+          "type":"string"
+        },
+        "street":{
+          "type":"string"
+        },
+        "neighborhood":{
+          "type":"string"
+        },
+        "city":{
+          "type":"string"
+        },
+        "state":{
+          "type":"string"
+        }
+      }
+    },
+    "Order":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "status":{
+          "type":"string"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "address":{
+          "$ref":"#/definitions/Address"
+        },
+        "deliver_status":{
+          "$ref":"#/definitions/DeliverStatus"
+        },
+        "books": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/BookWithUri"
+          }
+        },
+        "total_price":{
+          "type":"number"
+        }
+      }
+    },
+    "OrderPost":{
+      "required":[
+        "cart_id"
+      ],
+      "properties":{
+        "cart_id":{
+          "type":"number"
+        },
+        "address_id":{
+          "type":"number"
+        },
+        "address":{
+          "$ref":"#/definitions/AddressPost" 
+        }
+      }
+    },
+    "OrderWithUri":{
+      "properties":{
+        "id":{
+          "type":"number"
+        },
+        "status":{
+          "type":"string"
+        },
+        "user":{
+          "$ref":"#/definitions/UserWithUri"
+        },
+        "address":{
+          "$ref":"#/definitions/Address"
+        },
+        "deliver_status":{
+          "$ref":"#/definitions/DeliverStatus"
+        },
+        "books": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/BookWithUri"
+          }
+        },
+        "total_price":{
+          "type":"number"
+        },
+        "order_uri":{
+          "type":"string"
+        }
+      }
+    },
     "Author":{
       "properties":{
         "id":{
@@ -802,6 +1777,19 @@
     },
     "User":{
       "properties":{
+        "id":{
+          "type":"number"
+        },
+        "name":{
+          "type":"string"
+        },
+        "cpf":{
+          "type":"string"
+        }
+      }
+    },
+    "UserPost":{
+      "properties":{
         "name":{
           "type":"string"
         },
@@ -812,14 +1800,41 @@
     },
     "UserWithUri":{
       "properties":{
+        "id":{
+          "type":"number"
+        },
         "name":{
           "type":"string"
         },
         "cpf":{
           "type":"string"
         },
-        "userUri":{
+        "user_uri":{
           "type":"string"
+        }
+      }
+    },
+    "Orders": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/OrderWithUri"
+          }
         }
       }
     },
@@ -853,7 +1868,7 @@
         "book":{
           "$ref":"#/definitions/BookWithUri"
         },
-        "commentUri":{
+        "comment_uri":{
           "type":"string"
         }
       }
@@ -861,13 +1876,13 @@
     "Publishers": {
       "required": [],
       "properties": {
-        "paginas": {
+        "pages": {
             "type": "number"
         },
-        "paginaAtual": {
+        "actualPage": {
             "type": "number"
         },
-        "proximaPagina": {
+        "nextPage": {
             "type": "string"
         },
         "data": {
@@ -882,16 +1897,16 @@
         }
       }
     },
-    "Comments": {
+    "Users": {
       "required": [],
       "properties": {
-        "paginas": {
+        "pages": {
             "type": "number"
         },
-        "paginaAtual": {
+        "actualPage": {
             "type": "number"
         },
-        "proximaPagina": {
+        "nextPage": {
             "type": "string"
         },
         "data": {
@@ -901,7 +1916,31 @@
             "wrapped": true
           },
           "items": {
-            "$ref": "#/definitions/CoomentWithUri"
+            "$ref": "#/definitions/UserWithUri"
+          }
+        }
+      }
+    },
+    "Comments": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/CommentWithUri"
           }
         }
       }
@@ -909,13 +1948,13 @@
     "Authors": {
       "required": [],
       "properties": {
-        "paginas": {
+        "pages": {
             "type": "number"
         },
-        "paginaAtual": {
+        "actualPage": {
             "type": "number"
         },
-        "proximaPagina": {
+        "nextPage": {
             "type": "string"
         },
         "data": {
@@ -933,13 +1972,13 @@
     "Books": {
       "required": [],
       "properties": {
-        "paginas": {
+        "pages": {
             "type": "number"
         },
-        "paginaAtual": {
+        "actualPage": {
             "type": "number"
         },
-        "proximaPagina": {
+        "nextPage": {
             "type": "string"
         },
         "data": {
@@ -955,6 +1994,16 @@
       }
     },
     "ErrorResponse": {
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteResponse": {
       "required": [
         "message"
       ],
