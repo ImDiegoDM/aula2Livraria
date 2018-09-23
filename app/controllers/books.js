@@ -106,7 +106,7 @@ module.exports={
       });
     });
   },
-  validate(body){
+  validate:function(body){
     return validate([
       "name|required",
       "authors_id|required",

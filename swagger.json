@@ -445,12 +445,6 @@
             "schema": {
               "$ref": "#/definitions/DeleteResponse"
             }
-          },
-          "400":{
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
           }
         }
       }
@@ -468,6 +462,20 @@
             "name": "authorId",
             "in": "path",
             "description": "Id of the author to return its books",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
             "required": false,
             "type": "string"
           }
@@ -645,12 +653,6 @@
             "description": "No Content",
             "schema": {
               "$ref": "#/definitions/DeleteResponse"
-            }
-          },
-          "400":{
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
@@ -852,12 +854,6 @@
             "description": "No Content",
             "schema": {
               "$ref": "#/definitions/DeleteResponse"
-            }
-          },
-          "400":{
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
@@ -1137,12 +1133,6 @@
             "schema": {
               "$ref": "#/definitions/DeleteResponse"
             }
-          },
-          "400":{
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
           }
         }
       }
@@ -1359,12 +1349,6 @@
             "description": "No Content",
             "schema": {
               "$ref": "#/definitions/DeleteResponse"
-            }
-          },
-          "400":{
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }

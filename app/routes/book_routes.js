@@ -3,9 +3,9 @@ var validate = require('../helper/validate');
 const commentsController = require('../controllers/comments');
 
 module.exports = function(app,db){
-
-
-    app.get('/books',async (req,res)=>{
+    let prefix='/v1/books';
+    
+    app.get(prefix,async (req,res)=>{
         let page = req.query.page ? req.query.page : 1;
         let itensPerPage = req.query.itensPerPage ? req.query.itensPerPage : 40;
         let books;
@@ -15,8 +15,7 @@ module.exports = function(app,db){
         res.send(books);
     });
 
-
-    app.post('/books',async(req,res)=>{
+    app.post(prefix,async(req,res)=>{
         let fields
         try{
             fields = booksController.validate(req.body);
@@ -35,7 +34,7 @@ module.exports = function(app,db){
         }
     });
 
-    app.get('/books/:bookId',async (req,res)=>{
+    app.get(prefix+'/:bookId',async (req,res)=>{
         book = await booksController.getSingleBook(db,req.params.bookId);
         if(book){
             res.send(book);
@@ -45,7 +44,7 @@ module.exports = function(app,db){
         res.status(404).send({message:'Book of id '+req.params.bookId+' not found'});
     });
 
-    app.put('/books/:bookId',async (req,res)=>{
+    app.put(prefix+'/:bookId',async (req,res)=>{
         let fields;
         try{
             fields = booksController.validate(req.body);
@@ -67,12 +66,12 @@ module.exports = function(app,db){
         });
     });
 
-    app.delete('/books/:bookId',async (req,res)=>{
+    app.delete(prefix+'/:bookId',async (req,res)=>{
         await booksController.delete(db,req.params.bookId)
         res.status(204).send();
     });
 
-    app.get('/books/:bookId/comments',async (req,res)=>{
+    app.get(prefix+'/:bookId/comments',async (req,res)=>{
         let page = req.query.page ? req.query.page : 1;
         let itensPerPage = req.query.itensPerPage ? req.query.itensPerPage : 40;
 
@@ -83,7 +82,7 @@ module.exports = function(app,db){
         ));
     });
 
-    app.put('/books/:bookId/comments',async (req,res)=>{
+    app.put(prefix+'/:bookId/comments',async (req,res)=>{
         let fields
         try{
             fields = commentsController.validate(req.body);
