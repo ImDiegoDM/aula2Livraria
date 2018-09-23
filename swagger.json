@@ -156,7 +156,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Books"
@@ -251,13 +251,13 @@
         "tags":[
           "Book"
         ],
-        "description":"Edit a book on the store",
+        "description":"Add a comment to this book",
         "operationId": "editBookComment",
         "parameters":[
           {
             "name": "bookId",
             "in": "path",
-            "description": "Id of the book to return",
+            "description": "Id of the book to commnet",
             "required": false,
             "type": "string"
           },
@@ -272,7 +272,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Books"
@@ -410,7 +410,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Author"
@@ -611,7 +611,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Author"
@@ -818,7 +818,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/User"
@@ -920,7 +920,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/User"
@@ -1174,7 +1174,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Order"
@@ -1222,7 +1222,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Order"
@@ -1319,7 +1319,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Altered with success",
             "schema": {
               "$ref": "#/definitions/Comment"
@@ -1856,6 +1856,9 @@
     },
     "CommentWithUri":{
       "properties":{
+        "id":{
+          "type":"number"
+        },
         "comment":{
           "type":"string"
         },
