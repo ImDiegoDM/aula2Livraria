@@ -19,5 +19,44 @@ module.exports={
         rej(err)
       }
     });
+  },
+  save(db,body){
+    return new Promise((res,rej)=>{
+      console.log(body);
+      
+      db.query(
+        'INSERT INTO pub_companies SET name = ?',
+        [body.name],
+        async(error, results, fields)=>{
+          if (error) rej(error);
+          let publisher = await this.getPublishers(db,'WHERE id = ?','',[results.insertId])
+          res(publisher[0]);
+        }
+      );
+    });
+  },
+  update(db,body,pubId){
+    return new Promise((res,rej)=>{
+      db.query(
+        'UPDATE pub_companies SET name = ? WHERE id = ?',
+        [
+          body.name,
+          pubId
+        ],
+        async(error, result, fields)=>{
+          if (error) rej(error);
+          let publisher = await this.getPublishers(db,'WHERE id = ?','',[pubId]);
+          res(publisher[0]);
+        }
+      );
+    });
+  },
+  delete(db,pubId){
+    return new Promise((res,rej)=>{
+      db.query('DELETE FROM pub_companies WHERE id = ?',[pubId],(error,results)=>{
+        if(error) rej(error);
+        res(results.affectedRows);
+      });
+    });
   }
 }

@@ -673,6 +673,20 @@
             "description": "Id of the author to return its books",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -680,12 +694,6 @@
             "description": "Success",
             "schema": {
               "$ref": "#/definitions/Books"
-            }
-          },
-          "404":{
-            "description": "Not Found",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
