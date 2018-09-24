@@ -25,7 +25,6 @@ module.exports = function(fieldsToValidate,body){
 
   for (let index = 0; index < fieldsToValidate.length; index++) {
     let response = validateField(fieldsToValidate[index],body);
-    console.log(response);
     if(response.errors){
       if(response.errors.required){
         missingFields.push(response.field);

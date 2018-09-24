@@ -975,7 +975,7 @@
         "tags":[
           "User"
         ],
-        "description":"Add a order for this user",
+        "description":"Add a order for this user based on his cart",
         "operationId": "addUserOrder",
         "parameters":[
           {
@@ -1549,10 +1549,10 @@
         "cart_id"
       ],
       "properties":{
-        "cart_id":{
-          "type":"number"
+        "status":{
+          "type":"string"
         },
-        "address_id":{
+        "adresses_id":{
           "type":"number"
         },
         "address":{

@@ -106,7 +106,7 @@ module.exports ={
    * return a query for get secondary object
    */
   querySecondaryObjects(objs,idKey){
-    let ids=[1,2,3];
+    let ids=[];
     for(let key in objs){
       for(let key2 in objs[key]){
         if(key2==idKey){

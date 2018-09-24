@@ -17,5 +17,15 @@ module.exports={
         return element;
       }
     }
+  },
+  getIds(objs){
+    let ids=[];
+    objs.forEach((item)=>{
+      ids.push(item.id);
+    });
+    ids = ids.filter(function(item, pos) {
+      return ids.indexOf(item) == pos;
+    });
+    return ids;
   }
 }
