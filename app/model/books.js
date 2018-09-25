@@ -9,7 +9,7 @@ module.exports={
   getBooks:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, name, price, year'+
-      (uri ? ', CONCAT("'+env.url+'books/",id) AS book_uri':'')+
+      (uri ? ', CONCAT("'+env.url+'v1/books/",id) AS book_uri':'')+
       ', authors_id, pub_companies_id, categories_id '+
       'FROM books '+where+' '+limit;
       console.log(query);

@@ -92,7 +92,6 @@ module.exports = function(app,db){
       res.status(400).send(err);
       return;
     }
-    
 
     await cartsModel.updateBooks(db,req.params.userId,JSON.parse(fields.books));
     let carts = await cartsModel.getCarts(db,'WHERE users_id = ?','',[req.params.userId]);

@@ -13,7 +13,7 @@ module.exports={
   getOrders:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(resolve,rej)=>{
       let query = 'SELECT id, status, users_id, adresses_id, deliver_satus_id, total_price'+
-      (uri ? ', CONCAT("'+env.url+'users/",id) AS cart_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/orders/",id) AS cart_uri ':' ')+
       'FROM orders '+where+' '+limit;
       
       let orders = await dbHelper.prommiseQuery(
@@ -59,14 +59,16 @@ module.exports={
       
       
       let booksIdsQuery = dbHelper.querySecondaryObjects(orderBooks,'books_id');
-      let books = await booksModel.getBooks(db,booksIdsQuery,'',[],true);
-
-      for (let i = 0; i < orderBooks.length; i++) {
-        for (let j = 0; j < orders.length; j++) {
-          if(orders[j].id==orderBooks[i].orders_id){
-            for (let k = 0; k < books.length; k++) {
-              if(books[k].id==orderBooks[i].books_id){
-                orders[j].books.push(books[k]);
+      if(booksIdsQuery){
+        let books = await booksModel.getBooks(db,booksIdsQuery,'',[],true);
+  
+        for (let i = 0; i < orderBooks.length; i++) {
+          for (let j = 0; j < orders.length; j++) {
+            if(orders[j].id==orderBooks[i].orders_id){
+              for (let k = 0; k < books.length; k++) {
+                if(books[k].id==orderBooks[i].books_id){
+                  orders[j].books.push(books[k]);
+                }
               }
             }
           }
@@ -121,6 +123,47 @@ module.exports={
       await dbHelper.prommiseQuery(db,insertQuery,inserts);
 
       res(await this.getOrders(db,'WHERE id = ?','',[orderResult.insertId]));
+    });
+  },
+  delete(db,orderId){
+    return new Promise(async(res,rej)=>{
+      await dbHelper.prommiseQuery(db,'DELETE FROM orders_has_books WHERE orders_id = ?',[orderId]);
+      db.query('DELETE FROM orders WHERE id = ?',[orderId],(error,results)=>{
+        if(error) rej(error);
+        res(results.affectedRows);
+      });
+    });
+  },
+  updateAddress(db,orderId,addressId){
+    return new Promise((res,rej)=>{
+      db.query(
+        'UPDATE orders SET adresses_id = ? WHERE id = ?',
+        [
+          addressId,
+          orderId
+        ],
+        async(error, result, fields)=>{
+          if (error) rej(error);
+          let orders = await this.getOrders(db,'WHERE id = ?','',[orderId])
+          res(orders[0]);
+        }
+      );
+    });
+  },
+  updateDeliverStatus(db,orderId,deliverStatusId){
+    return new Promise((res,rej)=>{
+      db.query(
+        'UPDATE orders SET deliver_satus_id = ? WHERE id = ?',
+        [
+          deliverStatusId,
+          orderId
+        ],
+        async(error, result, fields)=>{
+          if (error) rej(error);
+          let orders = await this.getOrders(db,'WHERE id = ?','',[orderId])
+          res(orders[0]);
+        }
+      );
     });
   }
 }

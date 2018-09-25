@@ -3,15 +3,13 @@ const rHelper = require('../helper/response');
 const booksModel = require('./books');
 const env = require('../../env');
 var mysql = require('mysql');
+const userModel = require('./users');
 
 module.exports={
   getCarts:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(resolve,rej)=>{
-      let query = 'SELECT id, users_id'+
-      (uri ? ', CONCAT("'+env.url+'users/",id) AS cart_uri ':' ')+
+      let query = 'SELECT id, users_id '+
       'FROM carts '+where+' '+limit;
-
-      console.log(mysql.format(query, inserts));
       
       let carts = await dbHelper.prommiseQuery(
         db,
@@ -24,12 +22,26 @@ module.exports={
         return;
       }
 
-      carts = carts.map((item)=>{
-        return Object.assign(item,{books:[]});
-      });
+      let userWherer = dbHelper.querySecondaryObjects(carts,'users_id');
+      let users = await userModel.getUsers(db,userWherer,'',[],true);
+
+      carts = rHelper.groupObjs(carts,'users_id',users,'user');
       
+      carts = carts.map((item)=>{
+        
+        return uri ? {
+          id:item.id,
+          cart_uri:env.url+'v1/users/'+item.user.id+'/carts',
+          user:item.user,
+          books:[]
+        } : {
+          id:item.id,
+          user:item.user,
+          books:[]
+        }
+      });
+
       let cartsIds = rHelper.getIds(carts);
-      console.log(cartsIds);
       let cartsWhere='WHERE carts_id IN ('
       cartsIds.forEach((value)=>{
         cartsWhere+=value+', ';
@@ -40,14 +52,16 @@ module.exports={
       let cartsBooks = await dbHelper.prommiseQuery(db,'SELECT * FROM carts_has_books '+cartsWhere);
 
       let booksidsQuery = dbHelper.querySecondaryObjects(cartsBooks,'books_id');
-      let books = await booksModel.getBooks(db,booksidsQuery,'',[],true);
-
-      for (let i = 0; i < cartsBooks.length; i++) {
-        for (let j = 0; j < carts.length; j++) {
-          if(carts[j].id==cartsBooks[i].carts_id){
-            for (let k = 0; k < books.length; k++) {
-              if(books[k].id==cartsBooks[i].books_id){
-                carts[j].books.push(books[k]);
+      if(booksidsQuery){
+        let books = await booksModel.getBooks(db,booksidsQuery,'',[],true);
+  
+        for (let i = 0; i < cartsBooks.length; i++) {
+          for (let j = 0; j < carts.length; j++) {
+            if(carts[j].id==cartsBooks[i].carts_id){
+              for (let k = 0; k < books.length; k++) {
+                if(books[k].id==cartsBooks[i].books_id){
+                  carts[j].books.push(books[k]);
+                }
               }
             }
           }

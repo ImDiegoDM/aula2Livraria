@@ -8,7 +8,7 @@ module.exports={
   getComments:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, comment, stars'+
-      (uri ? ', CONCAT("'+env.url+'comments/",id) AS comment_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/comments/",id) AS comment_uri ':' ')+
       ', users_id, books_id '+
       'FROM comments '+where+' '+limit;
 

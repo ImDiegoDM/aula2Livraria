@@ -1241,38 +1241,70 @@
         }
       }
     },
-    "/v1/comments":{
+    "/v1/adresses":{
       "x-swagger-router-controller": "user",
       "get": {
         "tags":[
-          "Comment"
+          "Address"
         ],
-        "description": "return all comments of this store",
-        "operationId": "getComments",
+        "description": "return all address of this store",
+        "operationId": "getAdresses",
         "parameters": [],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Comments"
+              "$ref": "#/definitions/Adresses"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Address"
+        ],
+        "description":"Add a address on the store",
+        "operationId": "addAddress",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body. obs: address_id or address should be sended",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/AddressPostComplete"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
       }
     },
-    "/v1/comments/{commentId}":{
+    "/v1/adresses/{addressId}":{
       "x-swagger-router-controller": "user",
       "get": {
         "tags":[
-          "Comment"
+          "Address"
         ],
-        "description": "return a comment",
-        "operationId": "getComment",
+        "description": "return a address",
+        "operationId": "getAddress",
         "parameters": [
           {
-            "name": "commentId",
+            "name": "addressId",
             "in": "path",
-            "description": "Id of the comment to return",
+            "description": "Id of the address to return",
             "required": false,
             "type": "string"
           }
@@ -1281,7 +1313,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Comment"
+              "$ref": "#/definitions/Address"
             }
           },
           "404":{
@@ -1294,15 +1326,15 @@
       },
       "put": {
         "tags":[
-          "Comment"
+          "Address"
         ],
-        "description": "Edit the comment",
-        "operationId": "editComment",
+        "description": "Edit the address",
+        "operationId": "editAddress",
         "parameters": [
           {
-            "name": "commentId",
+            "name": "addressId",
             "in": "path",
-            "description": "Id of the comment to edit",
+            "description": "Id of the address to edit",
             "required": false,
             "type": "string"
           },
@@ -1312,7 +1344,7 @@
             "description": "Body",
             "required": true,
             "schema":{
-              "$ref": "#/definitions/CommentPost"
+              "$ref": "#/definitions/AddressPostComplete"
             }
           }
         ],
@@ -1320,7 +1352,7 @@
           "200": {
             "description": "Altered with success",
             "schema": {
-              "$ref": "#/definitions/Comment"
+              "$ref": "#/definitions/Address"
             }
           },
           "400":{
@@ -1339,15 +1371,168 @@
       },
       "delete":{
         "tags":[
-          "Comment"
+          "Address"
         ],
-        "description":"Delete a comment on the store",
-        "operationId": "deleteComment",
+        "description":"Delete a Address on the store",
+        "operationId": "deleteAddress",
         "parameters":[
           {
-            "name": "commentId",
+            "name": "addressId",
             "in": "path",
-            "description": "Id of the comment to delete",
+            "description": "Id of the address to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/deliver-status":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "DeliverStatus"
+        ],
+        "description": "return all deliver status of this store",
+        "operationId": "getDSS",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeliverStatusPaged"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "DeliverStatus"
+        ],
+        "description":"Add a deliver status on the store",
+        "operationId": "addDS",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/DeliverStatusPostComplete"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/DeliverStatus"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/deliver-status/{deliverStatusId}":{
+      "x-swagger-router-controller": "user",
+      "get": {
+        "tags":[
+          "DeliverStatus"
+        ],
+        "description": "return a deliver status",
+        "operationId": "getDS",
+        "parameters": [
+          {
+            "name": "deliverStatusId",
+            "in": "path",
+            "description": "Id of the deliver status to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeliverStatus"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags":[
+          "DeliverStatus"
+        ],
+        "description": "Edit the deliver status",
+        "operationId": "editDS",
+        "parameters": [
+          {
+            "name": "deliverStatusId",
+            "in": "path",
+            "description": "Id of the deliver status to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/DeliverStatusPostComplete"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/DeliverStatus"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "DeliverStatus"
+        ],
+        "description":"Delete a deliver status on the store",
+        "operationId": "deleteDS",
+        "parameters":[
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "Id of the deliver status to delete",
             "required": false,
             "type": "string"
           }
@@ -1454,7 +1639,7 @@
         }
       }
     },
-    "AddressPost":{
+    "AddressPostComplete":{
       "properties":{
         "cep":{
           "type":"string"
@@ -1473,7 +1658,45 @@
         }
       }
     },
+    "AddressPost":{
+      "properties":{
+        "adresses_id":{
+          "type":"number"
+        }
+      }
+    },
+    "DeliverStatusPaged": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/DeliverStatus"
+          }
+        }
+      }
+    },
     "DeliverStatusPost":{
+      "properties":{
+        "deliver_status_id":{
+          "type":"number"
+        }
+      }
+    },
+    "DeliverStatusPostComplete":{
       "properties":{
         "status":{
           "type":"string"
@@ -1826,6 +2049,30 @@
           },
           "items": {
             "$ref": "#/definitions/OrderWithUri"
+          }
+        }
+      }
+    },
+    "Adresses": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/Address"
           }
         }
       }

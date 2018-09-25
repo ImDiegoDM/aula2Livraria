@@ -114,6 +114,7 @@ module.exports ={
         }
       }
     }
+    if(ids.length==0)return undefined;
     ids = ids.filter(function(item, pos) {
       return ids.indexOf(item) == pos;
     });

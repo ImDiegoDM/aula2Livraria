@@ -5,7 +5,7 @@ module.exports={
   getUsers:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, name, cpf'+
-      (uri ? ', CONCAT("'+env.url+'users/",id) AS user_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/users/",id) AS user_uri ':' ')+
       'FROM users '+where+' '+limit;
 
       try{

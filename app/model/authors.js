@@ -5,7 +5,7 @@ module.exports={
   getAuthors:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, name'+
-      (uri ? ', CONCAT("'+env.url+'authors/",id) AS author_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/authors/",id) AS author_uri ':' ')+
       'FROM authors '+where+' '+limit;
       try{
         let authors = await dbHelper.prommiseQuery(

@@ -5,7 +5,7 @@ module.exports={
   getCategories:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, name'+
-      (uri ? ', CONCAT("'+env.url+'categories/",id) AS category_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/categories/",id) AS category_uri ':' ')+
       'FROM categories '+where+' '+limit;
 
       try{

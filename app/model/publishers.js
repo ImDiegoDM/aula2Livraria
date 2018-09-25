@@ -5,7 +5,7 @@ module.exports={
   getPublishers:(db,where='',limit='',inserts=[],uri=false)=>{
     return new Promise(async(res,rej)=>{
       let query = 'SELECT id, name'+
-      (uri ? ', CONCAT("'+env.url+'publishers/",id) AS pub_company_uri ':' ')+
+      (uri ? ', CONCAT("'+env.url+'v1/publishers/",id) AS pub_company_uri ':' ')+
       'FROM pub_companies '+where+' '+limit;
 
       try{
