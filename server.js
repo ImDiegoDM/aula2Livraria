@@ -9,7 +9,7 @@ var env = require('./env');
 var connection = mysql.createConnection(env.db);
 
 const app = express();
-const port=4200;
+const port=3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
