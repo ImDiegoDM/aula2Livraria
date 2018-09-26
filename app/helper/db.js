@@ -68,14 +68,16 @@ module.exports ={
   /**
    * paginated default response
    */
-  paginateResponse(data,url,page,itensPerPage,pages){
+  paginateResponse(data,url,page,itensPerPage,pages,search){
     pages=Math.ceil(pages/itensPerPage);
+    
     let obj = {
       pages:pages,
       actualPage:page,
     }
     if(page<pages){
       obj.nextPage=url+'?page='+(parseInt(page)+1)+'&itensPerPage='+itensPerPage;
+      if(search)obj.nextPage+='&search='+search;
     }
     obj.data=data;
     return obj;

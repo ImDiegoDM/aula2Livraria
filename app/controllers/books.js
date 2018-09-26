@@ -6,25 +6,44 @@ const booksModel = require('../model/books');
 const commenstModel = require('../model/commnets');
 
 module.exports={
-  getBooks:function(db,options){
+  getBooks:function(db,options,search){
     let inserts = [
       options.itensPerPage*(options.page-1),
       options.itensPerPage
     ];
     return new Promise((res,rej)=>{
-      booksModel.getBooks(db,'','LIMIT ?,?',inserts,true).then(async (response)=>{
-        res(
-          dbHelper.paginateResponse(
-            response,
-            env.url+'books',
-            options.page,
-            options.itensPerPage,
-            await dbHelper.countRows('books',db)
-          )
-        );
-      }).catch((err)=>{
-        rej(err);
-      })
+      console.log(inserts);
+      if(search){
+        booksModel.search(db,'LIMIT ?,?',inserts,search).then(async (response)=>{
+          res(
+            dbHelper.paginateResponse(
+              response,
+              env.url+'books',
+              options.page,
+              options.itensPerPage,
+              await booksModel.countSearch(db,search),
+              search
+            )
+          );
+        }).catch((err)=>{
+          rej(err);
+        })
+      }
+      else{
+        booksModel.getBooks(db,'','LIMIT ?,?',inserts,true).then(async (response)=>{
+          res(
+            dbHelper.paginateResponse(
+              response,
+              env.url+'books',
+              options.page,
+              options.itensPerPage,
+              await dbHelper.countRows('books',db)
+            )
+          );
+        }).catch((err)=>{
+          rej(err);
+        })
+      }
     });
   },
   getSingleBook:function(db,bookId){

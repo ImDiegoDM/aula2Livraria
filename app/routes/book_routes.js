@@ -10,7 +10,7 @@ module.exports = function(app,db){
         let itensPerPage = req.query.itensPerPage ? req.query.itensPerPage : 40;
         let books;
 
-        books = await booksController.getBooks(db,{page:parseInt(page),itensPerPage:parseInt(itensPerPage)});
+        books = await booksController.getBooks(db,{page:parseInt(page),itensPerPage:parseInt(itensPerPage)},req.query.search);
         
         res.send(books);
     });
