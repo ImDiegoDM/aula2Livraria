@@ -1763,7 +1763,7 @@
   "definitions": {
     "CartPost":{
       "properties":{
-        "books_ids":{
+        "books":{
           "type":"array",
           "xml": {
             "name": "books",
@@ -1988,7 +1988,7 @@
           "type":"number"
         },
         "address":{
-          "$ref":"#/definitions/AddressPost" 
+          "$ref":"#/definitions/AddressPostComplete" 
         }
       }
     },
