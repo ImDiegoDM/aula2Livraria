@@ -48,33 +48,25 @@ module.exports={
   },
   getSingleBook:function(db,bookId){
     return new Promise((res,rej)=>{
-      let select = 'books.id, books.name, books.price, books.year,'+
-      dbHelper.concatQuery({id:'authors.id',name:'authors.name'},env.url+'authors/','author_uri')+' AS author, '+
-      dbHelper.concatQuery({id:'pub_companies.id',name:'pub_companies.name'},env.url+'publishers/','pub_company_uri')+' AS pub_company, '+
-      dbHelper.concatQuery({id:'categories.id',name:'categories.name'},env.url+'categories/','catgory_uri')+' AS category ';
-  
-      let query = 'SELECT '+select+
-      'FROM books '+
-      'INNER JOIN authors ON books.authors_id = authors.id '+
-      'INNER JOIN pub_companies ON books.pub_companies_id = pub_companies.id '+
-      'INNER JOIN categories ON books.categories_id = pub_companies.id '+
-      'WHERE books.id = ?';
-      let inserts = [
-        bookId
-      ];
-  
-      db.query(query,inserts,(error, results, fields)=> {
-        if (error) rej(error);
-        results = dbHelper.responseToJson(results);
-        res(results[0]);
-      });
+      booksModel.getBooks(db,'WHERE id = ?','',[bookId],false).then(async (response)=>{
+        res(response[0]);
+      }).catch((err)=>{
+        rej(err);
+      })
     });
   },
   save:function(db,book){
     return new Promise((res,rej)=>{
       db.query('INSERT INTO books SET ?',book,async(error, results, fields)=>{
         if (error) rej(error);
-        res(await this.getSingleBook(db,results.insertId));
+        else {
+          console.log(results.insertId);
+          booksModel.getBooks(db,'WHERE id = ?','',[results.insertId],true).then(async (response)=>{
+            res(response);
+          }).catch((err)=>{
+            rej(err);
+          })
+        }
       });
     });
   },

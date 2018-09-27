@@ -2150,9 +2150,9 @@
     "BookPost":{
       "required": [
         "name",
-        "author_id",
-        "pub_company_id",
-        "category_id",
+        "authors_id",
+        "pub_companies_id",
+        "categories_id",
         "price",
         "year"
       ],
