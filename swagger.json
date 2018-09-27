@@ -1547,6 +1547,215 @@
         }
       }
     },
+    "/v1/categories": {
+      "x-swagger-router-controller": "books",
+      "get": {
+        "tags":[
+          "Category"
+        ],
+        "description": "Return all categories of the store",
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Categories"
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Category"
+        ],
+        "description":"Create a category on the store",
+        "operationId": "addCategory",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/CategoryPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "400":{
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/categories/{categoryId}": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Category"
+        ],
+        "description": "Return a category",
+        "operationId": "getCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Id of the category to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Category"
+        ],
+        "description":"Edit a category on the store",
+        "operationId": "editCategory",
+        "parameters":[
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Id of the category to edit",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Body",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/CategoryPost"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Altered with success",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "400":{
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Category"
+        ],
+        "description":"delete a category on the store",
+        "operationId": "deleteCategory",
+        "parameters":[
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Id of the category to delete",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/DeleteResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/categories/{categoryId}/books": {
+      "x-swagger-router-controller": "author",
+      "get": {
+        "tags":[
+          "Category"
+        ],
+        "description": "Return the category books",
+        "operationId": "getCategoryBooks",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Id of the category to return its books",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Actual page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          },
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/swagger": {
       "x-swagger-pipe": "swagger_raw"
     }
@@ -1894,6 +2103,13 @@
         }
       }
     },
+    "CategoryPost":{
+      "properties":{
+        "name":{
+         "type":"string" 
+        }
+      }
+    },
     "CategoryWithUri":{
       "properties":{
         "id":{
@@ -1905,6 +2121,30 @@
         "catgory_uri":{
           "type":"string" 
          }
+      }
+    },
+    "Categories": {
+      "required": [],
+      "properties": {
+        "pages": {
+            "type": "number"
+        },
+        "actualPage": {
+            "type": "number"
+        },
+        "nextPage": {
+            "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "xml": {
+            "name": "data",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/CategoryWithUri"
+          }
+        }
       }
     },
     "BookPost":{

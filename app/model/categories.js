@@ -19,5 +19,42 @@ module.exports={
         rej(err)
       }
     });
+  },
+  save(db,params){
+    return new Promise((res,rej)=>{
+      db.query(
+        'INSERT INTO categories SET name = ?',
+        [params.name],
+        async(error, results, fields)=>{
+          if (error) rej(error);
+          let deliverStatus = await this.getCategories(db,'WHERE id = ?','',[results.insertId],true);
+          res(deliverStatus[0]);
+        }
+      );
+    });
+  },
+  update(db,body,categorieId){
+    return new Promise((res,rej)=>{
+      db.query(
+        'UPDATE categories SET name = ?',
+        [
+          body.name,
+          categorieId
+        ],
+        async(error, result, fields)=>{
+          if (error) rej(error);
+          let deliverStatus = await this.getCategories(db,'WHERE id = ?','',[categorieId])
+          res(deliverStatus[0]);
+        }
+      );
+    });
+  },
+  delete(db,categorieId){
+    return new Promise((res,rej)=>{
+      db.query('DELETE FROM categories WHERE id = ?',[categorieId],(error,results)=>{
+        if(error) rej(error);
+        res(results.affectedRows);
+      });
+    });
   }
 }

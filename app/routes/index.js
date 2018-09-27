@@ -6,6 +6,7 @@ const cartRoutes = require('./carts_routes');
 const orderRoutes = require('./orders_routes');
 const adressesRoutes = require('./adresses_routes');
 const deliverStatusRoutues = require('./deliver_status_routes');
+const categoriesRoutes = require('./categories_routes');
 
 module.exports = function(app,db){
     bookRoutes(app,db);
@@ -16,4 +17,5 @@ module.exports = function(app,db){
     orderRoutes(app,db);
     adressesRoutes(app,db);
     deliverStatusRoutues(app,db);
+    categoriesRoutes(app,db);
 }
